@@ -74,16 +74,21 @@ public class TwitterProducer {
         properties.setProperty(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, "1");
         properties.setProperty(ProducerConfig.RETRIES_CONFIG, Integer.toString(Integer.MAX_VALUE));
 
+        // high throughput props
+        properties.setProperty(ProducerConfig.COMPRESSION_TYPE_CONFIG,"snappy");
+        properties.setProperty(ProducerConfig.LINGER_MS_CONFIG,"20");
+        properties.setProperty(ProducerConfig.BATCH_SIZE_CONFIG,Integer.toString(32*1014));
+
         KafkaProducer<String, String> stringStringKafkaProducer = new KafkaProducer<String, String>(
                 properties);
         return stringStringKafkaProducer;
     }
 
     private Client createTwitterClient(BlockingQueue<String> msgQueue) {
-        String consumerKey = "OlgIkqr1MZkCaFIHxXLQXuhiv";
-        String consumerSecret = "p0ihVr8OYzWGaEQisyt5TBrXReV2MDxuKtbqCWRV9wfazKD7AR";
-        String token = "696985484115910656-9M7bCBRoIQJeO9yBaKUkYmkS39rUlr0";
-        String secret = "ywXyeP7ti8t9ex5Q9YNM5X3X1IYP71fuINA1VAWQ771Ve";
+        String consumerKey = "uYYIqBOkzKaxUcOtMoTnoGtHL";
+        String consumerSecret = "aL7VHz6pRQAGVlmsbE2KN8lN0dduu8w1VwHxuLKd2fvE2tMpRj";
+        String token = "696985484115910656-lvEqSj214aN3beu3MscM9KDuv1J2Fh2";
+        String secret = "hzRVPAr3mP3N478dDb2XlJyb56zjp9FXgPiqNgaUQwz3x";
 
         /** Set up your blocking queues: Be sure to size these properly based on expected TPS of your stream */
 
@@ -92,7 +97,7 @@ public class TwitterProducer {
         Hosts hosebirdHosts = new HttpHosts(Constants.STREAM_HOST);
         StatusesFilterEndpoint hosebirdEndpoint = new StatusesFilterEndpoint();
 
-        List<String> terms = Lists.newArrayList("kafka");
+        List<String> terms = Lists.newArrayList("kafka","BitCoin","usa","India");
         hosebirdEndpoint.trackTerms(terms);
 
         // These secrets should be read from a config file
